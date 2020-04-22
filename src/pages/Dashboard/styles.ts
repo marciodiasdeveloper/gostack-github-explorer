@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { shade } from 'polished';
 
 interface FormProps {
@@ -25,7 +25,12 @@ export const Form = styled.form<FormProps>`
     padding: 0 24px;
     border: 0;
     border-radius: 5px 0 0 5px;
+    border: 2px solid #fff;
+    border-right: 0px;
 
+    ${(props) => props.hasError && css`
+      border-color: #c53030;
+    `}
     &::placeholder {
       color: #a8a8b3;
     }
