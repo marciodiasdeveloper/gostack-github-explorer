@@ -39,13 +39,21 @@ const Repository: React.FunctionComponent = () => {
   const { params } = useRouteMatch<RepositoryParams>();
 
   useEffect(() => {
-    async function loadData(): Promise<void> {
-      const [repository, issues] = await Promise.all([
-        api.get(`repos/${params.repository}`),
-        api.get(`repos/${params.repository}`),
-      ]);
-    }
-    loadData();
+    api.get(`repos/${params.repository}`).then((response) => {
+      setRepository(response.data)
+    });
+    
+    api.get(`repos/${params.repository}/issues`).then((response) => {
+      setIssues(response.data);
+    });
+
+    // async function loadData(): Promise<void> {
+    //   const [repository, issues] = await Promise.all([
+    //     api.get(`repos/${params.repository}`),
+    //     api.get(`repos/${params.repository}`),
+    //   ]);
+    // }
+    // loadData();
   }, [params.repository]);
 
   return (
@@ -58,30 +66,31 @@ const Repository: React.FunctionComponent = () => {
         </Link>
       </Header>
 
-      <RepositoryInfo>
-        <header>
-          <img src="" alt="Rocketseat" />
-          <div>
-            <strong>Rocketseat</strong>
-            <p>descrição</p>
-          </div>
-        </header>
-        <ul>
-          <li>
-            <strong>1808</strong>
-            <span>Stars</span>
-          </li>
-          <li>
-            <strong>1808</strong>
-            <span>Forks</span>
-          </li>
-          <li>
-            <strong>1808</strong>
-            <span>Issues abertas</span>
-          </li>
-        </ul>
-      </RepositoryInfo>
-
+      {repository && (
+        <RepositoryInfo>
+          <header>
+            <img src={repository?.owner.avatar_url} alt={repository.owner.login} />
+            <div>
+              <strong>{repository.full_name}</strong>
+              <p>{repository.description}</p>
+            </div>
+          </header>
+          <ul>
+            <li>
+              <strong>{repository.stargazers_count}</strong>
+              <span>Stars</span>
+            </li>
+            <li>
+              <strong>{repository.forks_count}</strong>
+              <span>Forks</span>
+            </li>
+            <li>
+              <strong>{repository.open_issues_count}</strong>
+              <span>Issues abertas</span>
+            </li>
+          </ul>
+        </RepositoryInfo>
+      )}
       <Issues>
         <Link to="fda">
           <div>
