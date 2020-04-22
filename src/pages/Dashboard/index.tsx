@@ -30,6 +30,7 @@ const Dashboard: React.FunctionComponent = () => {
     const repository = response.data;
 
     setRepositories([...repositories, repository]);
+    setNewRepo('');
   }
 
   return (
