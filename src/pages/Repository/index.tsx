@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouteMatch, Link } from 'react-router-dom';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 import logoImg from '../../assets/logo.svg';
 
@@ -27,9 +27,10 @@ interface Repository {
 interface Issue {
   id: number;
   title: string;
+  html_url: string;
   user: {
     login: string;
-  }
+  };
 }
 
 const Repository: React.FunctionComponent = () => {
@@ -40,9 +41,9 @@ const Repository: React.FunctionComponent = () => {
 
   useEffect(() => {
     api.get(`repos/${params.repository}`).then((response) => {
-      setRepository(response.data)
+      setRepository(response.data);
     });
-    
+
     api.get(`repos/${params.repository}/issues`).then((response) => {
       setIssues(response.data);
     });
@@ -69,7 +70,10 @@ const Repository: React.FunctionComponent = () => {
       {repository && (
         <RepositoryInfo>
           <header>
-            <img src={repository?.owner.avatar_url} alt={repository.owner.login} />
+            <img
+              src={repository?.owner.avatar_url}
+              alt={repository.owner.login}
+            />
             <div>
               <strong>{repository.full_name}</strong>
               <p>{repository.description}</p>
@@ -92,7 +96,7 @@ const Repository: React.FunctionComponent = () => {
         </RepositoryInfo>
       )}
       <Issues>
-        {issues.map(issue => (
+        {issues.map((issue) => (
           <a key={issue.id} href={issue.html_url}>
             <div>
               <strong>{issue.title}</strong>
@@ -104,6 +108,6 @@ const Repository: React.FunctionComponent = () => {
       </Issues>
     </>
   );
-}
+};
 
 export default Repository;
